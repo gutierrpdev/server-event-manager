@@ -41,7 +41,7 @@ namespace ServerEvents
             // corroutines cannot be called from an object that is not assigned to a GameObject. We wish to make this process
             // independent of other MonoBehaviour components, and so we make use of a convenience class to handle this issue by
             // generating an single-use gameObject to execute our corroutine.
-            CorroutineLauncher.StartCoroutine(graphQLClient.SendRequest(mutation));
+            CoroutineLauncher.StartCoroutine(graphQLClient.SendRequest(mutation));
         }
     }
 }

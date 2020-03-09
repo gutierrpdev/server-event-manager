@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using UnityEngine;
 
-public class CorroutineLauncher
+public class CoroutineLauncher
 {
     /*
      * Helper Method to Start a coroutine from a C# class that does not extend MonoBehaviour in order to
