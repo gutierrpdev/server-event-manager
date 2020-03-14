@@ -1,17 +1,17 @@
 ﻿using System;
 
-namespace ServerManagement
+namespace ServerEvents
 {
     // simple data holder for gameEvents (here named serverEvents to prevent ambiguity).
     [Serializable]
     public class ServerEvent
     {
-        public int userId;
+        public string userId;
         public int timestamp;
         public string gameName;
         public string name;
         public ServerEventParameter[] parameters;
-        public ServerEvent(int userId, int timestamp, string gameName, string name, ServerEventParameter[] parameters = null)
+        public ServerEvent(string userId, int timestamp, string gameName, string name, ServerEventParameter[] parameters = null)
         {
             this.userId = userId;
             this.gameName = gameName;

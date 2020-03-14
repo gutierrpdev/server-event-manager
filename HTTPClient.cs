@@ -1,61 +1,47 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections;
 using System.Text;
 using UnityEngine;
 using UnityEngine.Networking;
 
-namespace GraphQL
+namespace HTTPClient
 {
     /*
-     * Provides a client to send simple GraphQL requests over to a server. 
+     * Provides a client to send simple POST requests over to a server. 
      */ 
-    public class GraphQLClient
+    public class EventClient
     {
         private string url;
 
-        // initialize with desired GraphQL endpoint
-        public GraphQLClient(string url)
+        // initialize with desired endpoint
+        public EventClient(string url)
         {
             this.url = url;
         }
 
-        // made serializable just so that it can easily be converted into a json with the structure:
-        // { "query" : "queryPayload"}, as explained in the GraphQL documentation page for creating clients.
-        [Serializable]
-        private class GraphQLQuery
+        private UnityWebRequest QueryRequest(object obj)
         {
-            public string query;
-        }
-
-        private UnityWebRequest QueryRequest(string query)
-        {
-            // encapsulate query within an adequate object.
-            GraphQLQuery objQuery = new GraphQLQuery(){
-                query = query
-            };
-
             // convert to a valid json-formatted string that can be accepted by server.
-            string json = JsonUtility.ToJson(objQuery);
-
-            // Generate POST request (remember that all GraphQL queries and actions must use the POST HTTP verb).
-            UnityWebRequest request = UnityWebRequest.Post(url, UnityWebRequest.kHttpVerbPOST);
+            string json = JsonUtility.ToJson(obj);
 
             // encode payload as an array of bytes so that it can be easily added to the request body.
             byte[] payload = Encoding.UTF8.GetBytes(json);
+
+            // Generate POST request.
+            UnityWebRequest request = UnityWebRequest.Put(url, payload);
 
             // attach upload/ download handlers and set content-type header to json.
             request.uploadHandler = new UploadHandlerRaw(payload);
             request.downloadHandler = new DownloadHandlerBuffer();
             request.SetRequestHeader("Content-Type", "application/json");
+            request.method = UnityWebRequest.kHttpVerbPOST;
 
             return request;
         }
 
-        public IEnumerator SendRequest(string query)
+        public IEnumerator SendRequest(object obj)
         {
-            // generate a valid request from string-formated GraphQL query.
-            UnityWebRequest request = QueryRequest(query);
+            // generate a valid request attaching obj to the request body.
+            UnityWebRequest request = QueryRequest(obj);
 
             // send the request over the network to the server specified in constructor.
             yield return request.SendWebRequest();
@@ -64,10 +50,6 @@ namespace GraphQL
             if (request.isNetworkError || request.isHttpError)
             {
                 Debug.Log("Request error:");
-                foreach (KeyValuePair<string, string> entry in request.GetResponseHeaders())
-                {
-                    Debug.Log(entry.Value + "=" + entry.Key);
-                }
                 Debug.Log(request.error);
             }
             // print event information to verify that what's being sent to the server is the same object that we created 

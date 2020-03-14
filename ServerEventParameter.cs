@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace ServerManagement
+namespace ServerEvents
 {
     // simple data holder for gameEventParameters.
     [Serializable]
