@@ -3,11 +3,11 @@ A set of utils to use for the intelligence assessment project in order to send g
 
 ## Usage Notes:
 
-To send an event over to the server, start by creating a new ServerEventManager object with the appropriate endpoint uri:
+To send an event over to the server, start by creating a new `ServerEventManager` object with the appropriate endpoint uri:
 
 `eventManager = new ServerEventManager(url);`
 
-To create a new ServerEvent, use the appropriate class constructor (note that the only non required field is `parameters`, which is set to null by default.)
+To create a new `ServerEvent`, use the appropriate class constructor (note that the only non required field is `parameters`, which is set to null by default.)
 
 `ServerEvent gameEvent = new ServerEvent(userId, timestamp, gameName, eventName, parameters);`
 
